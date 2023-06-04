@@ -1,10 +1,8 @@
 const allowedCors = [
-  'http://mestofulldomen.nomoredomains.monster',
-  'http://api.mestofulldomen.nomoredomains.monster',
-  'https://mestofulldomen.nomoredomains.monster',
-  'https://api.mestofulldomen.nomoredomains.monster',
-  'http://158.160.70.180',
-  'https://158.160.70.180',
+  'http://moviedomen.nomoredomains.rocks',
+  'https://moviedomen.nomoredomains.rocks',
+  'http://51.250.110.17',
+  'https://51.250.110.17',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
