@@ -1,7 +1,10 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const validationErrors = require('celebrate').errors;
+const cors = require('cors');
 
 const { PORT = 3000 } = process.env;
 
@@ -13,6 +16,15 @@ const router = require('./routes/index');
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());

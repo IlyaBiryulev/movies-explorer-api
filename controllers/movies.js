@@ -1,6 +1,6 @@
 const Movie = require('../models/movie');
 
-/* const ForbiddenError = require('../errors/ForbiddenError'); */
+const ForbiddenError = require('../errors/ForbiddenError');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundErrors');
 
@@ -55,11 +55,22 @@ module.exports.createMovie = (req, res, next) => {
     });
 };
 
-/* module.exports.deleteMovie = (req, res, next) => {
+module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params.cardId)
-    .orFail(() => new NotFoundError('Пользователь с указанным id не существует'))
-    .then((movie) => {
-      Movie.deleteOne({ _id: movie._id, owner: req.user._id });
+    .orFail()
+    .then((card) => {
+      if (card.owner.toString() === req.user._id) {
+        card.deleteOne();
+        res.send('Фильм удален');
+      } else {
+        throw new ForbiddenError('Невозможно удалить карточку созданную не вами');
+      }
     })
-    .catch(next);
-}; */
+    .catch((err) => {
+      if (err.name === 'NotFoundError') {
+        next(new NotFoundError('Пользователь с указанным id не существует'));
+      } else {
+        next(err);
+      }
+    });
+};
