@@ -1,7 +1,7 @@
 {
   "name": "movies-explorer-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "- [Ссылка на API сервер проекта](https://moviedomen.nomoredomains.rocks) - IP-адрес проекта: 158.160.23.7",
   "main": "app.js",
   "scripts": {
     "lint": "npx eslint ./",

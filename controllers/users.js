@@ -31,18 +31,10 @@ module.exports.userUpdate = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const {
-    name,
-    email,
-    password,
-  } = req.body;
+  const { email, password, name } = req.body;
 
   bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name,
-      email,
-      password: hash,
-    }))
+    .then((hash) => User.create({ email, password: hash, name }))
     .then((user) => {
       const data = user.toObject();
       delete data.password;
@@ -53,7 +45,7 @@ module.exports.createUser = (req, res, next) => {
         next(new ConflictError(
           `Пользователь с email '${email}' уже существует.`,
         ));
-      } else if (err.name === 'ValidationError') {
+      } else if (err instanceof ValidationError) {
         next(new ValidationError('Некорректные данные при создании пользователя.'));
       } else {
         next(err);
@@ -79,4 +71,9 @@ module.exports.login = (req, res, next) => {
       res.send({ message: 'Успешный вход' });
     })
     .catch(next);
+};
+
+module.exports.logout = (req, res) => {
+  res.clearCookie('jwt');
+  res.send({ message: 'Успешный выход' });
 };
