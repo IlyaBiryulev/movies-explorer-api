@@ -5,11 +5,13 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const validationErrors = require('celebrate').errors;
 const cors = require('cors');
+const helmet = require('helmet');
 
 const { PORT = 3000 } = process.env;
 
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const limiter = require('./middlewares/limiter');
 
 const router = require('./routes/index');
 
@@ -24,6 +26,9 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
+
+app.use(helmet());
+app.use(limiter);
 app.use(cors(corsOptions));
 
 app.use(express.json());

@@ -12,11 +12,11 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'Необходимо указать режиссёр фильма'],
   },
   duration: {
-    type: String,
+    type: Number,
     required: [true, 'Необходимо указать продолжительность фильма'],
   },
   year: {
-    type: Number,
+    type: String,
     required: [true, 'Необходимо указать год выпуска фильма'],
   },
   description: {
@@ -55,7 +55,6 @@ const movieSchema = new mongoose.Schema({
   movieId: {
     type: Number,
     required: [true, 'Необходимо указать ID фильма'],
-    ref: 'user',
   },
   nameRU: {
     type: String,

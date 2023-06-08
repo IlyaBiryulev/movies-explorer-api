@@ -1,3 +1,7 @@
+const {
+  DocumentNotFoundError,
+} = require('mongoose').Error;
+
 const Movie = require('../models/movie');
 
 const ForbiddenError = require('../errors/ForbiddenError');
@@ -5,7 +9,8 @@ const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundErrors');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.findById({ owner: req.user._id })
+  Movie.find({ owner: req.user._id })
+    .orFail()
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'NotFoundError') {
@@ -24,11 +29,11 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
-    nameRU,
-    nameEN,
+    trailerLink,
     thumbnail,
     movieId,
+    nameRU,
+    nameEN,
   } = req.body;
   const ownerId = req.user._id;
   Movie.create({
@@ -38,11 +43,11 @@ module.exports.createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
-    nameRU,
-    nameEN,
+    trailerLink,
     thumbnail,
     movieId,
+    nameRU,
+    nameEN,
     owner: ownerId,
   })
     .then((movie) => res.status(200).send(movie))
@@ -56,12 +61,13 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.cardId)
+  Movie.findById(req.params.movieId)
     .orFail()
-    .then((card) => {
-      if (card.owner.toString() === req.user._id) {
-        card.deleteOne();
-        res.send('Фильм удален');
+    .then((movie) => {
+      if (movie.owner.toString() === req.user._id) {
+        movie.remove()
+          .then(() => res.send('Фильм удален'))
+          .catch((err) => next(err));
       } else {
         throw new ForbiddenError('Невозможно удалить карточку созданную не вами');
       }
@@ -69,6 +75,8 @@ module.exports.deleteMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'NotFoundError') {
         next(new NotFoundError('Пользователь с указанным id не существует'));
+      } else if (err instanceof DocumentNotFoundError) {
+        next(new NotFoundError('Несуществующий ID фильма'));
       } else {
         next(err);
       }

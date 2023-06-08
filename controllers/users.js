@@ -23,7 +23,9 @@ module.exports.userUpdate = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Некорректные данные при создании пользователя.'));
+        next(new ValidationError('Некорректные данные при обновлении пользователя.'));
+      } else if (err.code === 11000) {
+        next(new ConflictError(`Пользователь с email '${email}' уже существует.`));
       } else {
         next(err);
       }
@@ -42,9 +44,7 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError(
-          `Пользователь с email '${email}' уже существует.`,
-        ));
+        next(new ConflictError(`Пользователь с email '${email}' уже существует.`));
       } else if (err instanceof ValidationError) {
         next(new ValidationError('Некорректные данные при создании пользователя.'));
       } else {
