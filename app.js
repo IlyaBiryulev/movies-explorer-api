@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const validationErrors = require('celebrate').errors;
 const cors = require('cors');
+const helmet = require('helmet');
 
 const { PORT = 3000 } = process.env;
 
@@ -26,6 +27,7 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
+app.use(helmet());
 app.use(limiter);
 app.use(cors(corsOptions));
 
