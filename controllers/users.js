@@ -15,6 +15,7 @@ const {
   BAD_REQUEST_CREATE_USER,
   SUCCESSFUL_SIGNIN,
   SUCCESSFUL_SIGNOUT,
+  DUBLICATE_ERROR,
 } = require('../utils/constants');
 
 module.exports.getUser = (req, res, next) => {
@@ -33,7 +34,7 @@ module.exports.userUpdate = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError(BAD_REQUEST_UPDATE_USER));
-      } else if (err.code === 11000) {
+      } else if (err.code === DUBLICATE_ERROR) {
         next(new ConflictError(REPEAT_EMAIL_ERROR));
       } else {
         next(err);
@@ -52,7 +53,7 @@ module.exports.createUser = (req, res, next) => {
       res.status(CREATE_CODE).send(data);
     })
     .catch((err) => {
-      if (err.code === 11000) {
+      if (err.code === DUBLICATE_ERROR) {
         next(new ConflictError(REPEAT_EMAIL_ERROR));
       } else if (err instanceof ValidationError) {
         next(new ValidationError(BAD_REQUEST_CREATE_USER));
