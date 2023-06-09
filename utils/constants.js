@@ -4,6 +4,7 @@ const AUTH_ERROR = 401;
 const FORBIDDEN_ERROR = 403;
 const NOT_FOUND_ERROR = 404;
 const CONFLICT_ERROR = 409;
+const DUBLICATE_ERROR = 11000;
 
 const NOT_FOUND_DATA = 'Данные не найдены.';
 const BAD_REQUEST_DATA_FILM = 'Некорректные данные при добавлении фильма.';
@@ -25,6 +26,7 @@ module.exports = {
   FORBIDDEN_ERROR,
   NOT_FOUND_ERROR,
   CONFLICT_ERROR,
+  DUBLICATE_ERROR,
   NOT_FOUND_DATA,
   BAD_REQUEST_DATA_FILM,
   FORBIDDEN_ERROR_DELETE_FILM,
