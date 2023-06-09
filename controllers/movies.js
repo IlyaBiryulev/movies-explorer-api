@@ -7,6 +7,15 @@ const Movie = require('../models/movie');
 const ForbiddenError = require('../errors/ForbiddenError');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundErrors');
+const {
+  CREATE_CODE,
+  NOT_FOUND_DATA,
+  BAD_REQUEST_DATA_FILM,
+  FORBIDDEN_ERROR_DELETE_FILM,
+  NOT_FOUND_ID,
+  NOT_FOUND_ID_FILM,
+  FILM_DELETE,
+} = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
@@ -14,7 +23,7 @@ module.exports.getMovies = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'NotFoundError') {
-        next(new NotFoundError('Данные не найдены.'));
+        next(new NotFoundError(NOT_FOUND_DATA));
       } else {
         next(err);
       }
@@ -50,10 +59,10 @@ module.exports.createMovie = (req, res, next) => {
     nameEN,
     owner: ownerId,
   })
-    .then((movie) => res.status(200).send(movie))
+    .then((movie) => res.status(CREATE_CODE).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Некорректные данные при добавлении фильма.'));
+        next(new ValidationError(BAD_REQUEST_DATA_FILM));
       } else {
         next(err);
       }
@@ -66,17 +75,17 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (movie.owner.toString() === req.user._id) {
         movie.remove()
-          .then(() => res.send('Фильм удален'))
+          .then(() => res.send({ message: FILM_DELETE }))
           .catch((err) => next(err));
       } else {
-        throw new ForbiddenError('Невозможно удалить карточку созданную не вами');
+        throw new ForbiddenError(FORBIDDEN_ERROR_DELETE_FILM);
       }
     })
     .catch((err) => {
       if (err.name === 'NotFoundError') {
-        next(new NotFoundError('Пользователь с указанным id не существует'));
+        next(new NotFoundError(NOT_FOUND_ID));
       } else if (err instanceof DocumentNotFoundError) {
-        next(new NotFoundError('Несуществующий ID фильма'));
+        next(new NotFoundError(NOT_FOUND_ID_FILM));
       } else {
         next(err);
       }

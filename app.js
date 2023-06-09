@@ -7,7 +7,8 @@ const validationErrors = require('celebrate').errors;
 const cors = require('cors');
 const helmet = require('helmet');
 
-const { PORT = 3000 } = process.env;
+const { PORT } = process.env;
+const { BASE_PORT, DATABASE } = require('./utils/config');
 
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -17,7 +18,7 @@ const router = require('./routes/index');
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+mongoose.connect(DATABASE);
 
 const corsOptions = {
   origin: '*',
@@ -43,4 +44,4 @@ app.use(errorLogger);
 app.use(validationErrors());
 app.use(errorHandler);
 
-app.listen(PORT);
+app.listen(PORT || BASE_PORT);
