@@ -4,6 +4,7 @@ const AUTH_ERROR = 401;
 const FORBIDDEN_ERROR = 403;
 const NOT_FOUND_ERROR = 404;
 const CONFLICT_ERROR = 409;
+const DEFAULT_ERROR = 500;
 const DUBLICATE_ERROR = 11000;
 
 const NOT_FOUND_DATA = 'Данные не найдены.';
@@ -16,8 +17,13 @@ const BAD_REQUEST_UPDATE_USER = 'Некорректные данные при о
 const BAD_REQUEST_CREATE_USER = 'Некорректные данные при создании пользователя.';
 const REPEAT_EMAIL_ERROR = 'Пользователь с таким email уже существует.';
 const SUCCESSFUL_SIGNIN = 'Успешный вход';
-const SUCCESSFUL_SIGNOUT = 'Успешный вход';
+const SUCCESSFUL_SIGNOUT = 'Успешный выход';
 const NOT_FOUND_URL = 'Несуществующий URL';
+const NEED_AUTH = 'Необходима авторизация';
+const DEFAULT_ERROR_MESSAGE = 'На сервере произошла ошибка';
+const AUTH_DATA_ERROR = 'Неправильная почта или пароль';
+const BAD_VALIDATION_EMAIL = 'Неправильный формат почты';
+const BAD_LINK_FORMAT = 'Неправильный формат ссылки';
 
 module.exports = {
   CREATE_CODE,
@@ -39,4 +45,10 @@ module.exports = {
   SUCCESSFUL_SIGNIN,
   SUCCESSFUL_SIGNOUT,
   NOT_FOUND_URL,
+  NEED_AUTH,
+  DEFAULT_ERROR,
+  DEFAULT_ERROR_MESSAGE,
+  AUTH_DATA_ERROR,
+  BAD_VALIDATION_EMAIL,
+  BAD_LINK_FORMAT,
 };

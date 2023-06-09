@@ -12,7 +12,6 @@ const {
   NOT_FOUND_DATA,
   BAD_REQUEST_DATA_FILM,
   FORBIDDEN_ERROR_DELETE_FILM,
-  NOT_FOUND_ID,
   NOT_FOUND_ID_FILM,
   FILM_DELETE,
 } = require('../utils/constants');
@@ -74,7 +73,7 @@ module.exports.deleteMovie = (req, res, next) => {
     .orFail()
     .then((movie) => {
       if (movie.owner.toString() === req.user._id) {
-        movie.remove()
+        movie.deleteOne()
           .then(() => res.send({ message: FILM_DELETE }))
           .catch((err) => next(err));
       } else {
@@ -82,9 +81,7 @@ module.exports.deleteMovie = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'NotFoundError') {
-        next(new NotFoundError(NOT_FOUND_ID));
-      } else if (err instanceof DocumentNotFoundError) {
+      if (err instanceof DocumentNotFoundError) {
         next(new NotFoundError(NOT_FOUND_ID_FILM));
       } else {
         next(err);
