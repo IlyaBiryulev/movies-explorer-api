@@ -4,8 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const validationErrors = require('celebrate').errors;
-const cors = require('cors');
 const helmet = require('helmet');
+const cors = require('./middlewares/cors');
 
 const { PORT, DATABASE_ADDRESS } = require('./utils/config');
 
@@ -19,15 +19,7 @@ const app = express();
 
 mongoose.connect(DATABASE_ADDRESS);
 
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
+app.use(cors);
 
 app.use(express.json());
 app.use(cookieParser());
