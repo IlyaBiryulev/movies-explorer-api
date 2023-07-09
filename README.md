@@ -84,5 +84,5 @@ IP-адрес проекта: 158.160.23.7
 
 Илья Бирюлев
 
-e-mail: birulevila@gmail.com
-tg: [@ilya_bir](https://t.me/ilya_bir)
+- e-mail: birulevila@gmail.com
+- tg: [@ilya_bir](https://t.me/ilya_bir)
